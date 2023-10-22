@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ./apache-php
+    ports:
+      - 80:80
+    volumes:
+      - "./src/sample/:/var/www/sample"
+      - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
+      - "./apache-php/myphp.ini:/etc/php.d/myphp.ini"
+    container_name: "apache-php"
+    privileged: true
+    command: /sbin/init
+  db:
+    image: mysql:8.0.23
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Tokyo
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    container_name: "mysql8.0.23"
